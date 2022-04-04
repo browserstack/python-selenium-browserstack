@@ -82,3 +82,4 @@ def run_session(desired_cap):
 #The Thread function takes run_session function and each set of capability from the caps array as an argument to run each session in parallel
 for cap in caps:
   Thread(target=run_session, args=(cap,)).start()
+

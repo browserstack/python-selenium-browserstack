@@ -43,4 +43,4 @@ try:
 except NoSuchElementException:
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Local test setup failed"}}')
 # Stop the driver
-driver.quit() 
+driver.quit()
