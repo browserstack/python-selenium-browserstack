@@ -1,3 +1,4 @@
+<<<<<<< main
 # python-selenium-browserstack
 
 ## Prerequisite
@@ -49,3 +50,6 @@ driver = webdriver.Remote(
   ```
   python ./scripts/parallel.py
   ```
+=======
+
+>>>>>>> main
