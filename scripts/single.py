@@ -3,21 +3,25 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 desired_cap = {
- 'browserName': 'iPhone',
- 'device': 'iPhone 11',
- 'realMobile': 'true',
- 'os_version': '14.0',
- 'name': 'BStack-[Python] Sample Test', # test name
- 'build': 'BStack Build Number 1' # CI/CD job or build name
+    "os" : "OS X",
+    "osVersion" : "Sierra",
+    "buildName" : "Final-Snippet-Test",
+    "sessionName" : "Selenium-4 Python snippet test",
+    "local" : "false",
+    "seleniumVersion" : "4.0.0",
 }
+
+options = ChromeOptions()
+options.set_capability('bstack:options', desired_cap)
 driver = webdriver.Remote(
-    command_executor='https://USER_NAME:ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
-    desired_capabilities=desired_cap)
+    command_executor='https://YOUR_USER_NAME:YOUR_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    options=options)
 try:
     driver.get("https://bstackdemo.com/")
     WebDriverWait(driver, 10).until(EC.title_contains("StackDemo"))
