@@ -40,7 +40,7 @@ driver = webdriver.Remote(
   With step 1 also add your browserstack access key to ./scripts/local.py
   ```python
   # You can also set an environment variable - "BROWSERSTACK_ACCESS_KEY".
-  bs_local_args = { "key": "ACCESS_KEY" }
+  bs_local_args = { "key": "BROWSERSTACK_ACCESS_KEY" }
   ```
   ```
   python ./scripts/local.py
