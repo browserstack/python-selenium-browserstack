@@ -50,7 +50,7 @@ caps=[{
 #run_session function adds a product in cart bstackdemo.com
 def run_session(desired_cap):
   driver = webdriver.Remote(
-      command_executor='https://USER_NAME:ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+      command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
       desired_capabilities=desired_cap)
   try:
     driver.get("https://bstackdemo.com/")
