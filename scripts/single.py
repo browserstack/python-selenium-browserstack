@@ -8,7 +8,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
-desired_cap = {
+bstack_options = {
     "os" : "OS X",
     "osVersion" : "Sierra",
     "buildName" : "Final-Snippet-Test",
@@ -18,9 +18,9 @@ desired_cap = {
 }
 
 options = ChromeOptions()
-options.set_capability('bstack:options', desired_cap)
+options.set_capability('bstack:options', bstack_options)
 driver = webdriver.Remote(
-    command_executor='https://YOUR_USER_NAME:YOUR_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
     options=options)
 try:
     driver.get("https://bstackdemo.com/")
@@ -39,5 +39,7 @@ try:
         driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "iPhone 12 has been successfully added to the cart!"}}')
 except NoSuchElementException:
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some elements failed to load"}}')
+except Exception:
+    driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
 # Stop the driver
 driver.quit()

@@ -16,18 +16,18 @@ pip install browserstack-local
 1. Change the capabilities if you wish:
 (For single test session, Navigate to ./scripts/single.py)
 ```python
-desired_cap = {
- 'browserName': 'iPhone',
- 'device': 'iPhone 11',
- 'realMobile': 'true',
- 'os_version': '14.0',
- 'name': 'BStack-[Python] Sample Test', # test name
- 'build': 'BStack Build Number 1' # CI/CD job or build name
+bstack_options = {
+    "os" : "OS X",
+    "osVersion" : "Sierra",
+    "buildName" : "Final-Snippet-Test",
+    "sessionName" : "Selenium-4 Python snippet test",
+    "local" : "false",
+    "seleniumVersion" : "4.0.0",
 }
 
 # Also use your Browserstack credentials
 driver = webdriver.Remote(
-    command_executor='https://USER_NAME:ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
     desired_capabilities=desired_cap)
 ```
 
@@ -40,7 +40,7 @@ driver = webdriver.Remote(
   With step 1 also add your browserstack access key to ./scripts/local.py
   ```python
   # You can also set an environment variable - "BROWSERSTACK_ACCESS_KEY".
-  bs_local_args = { "key": "ACCESS_KEY" }
+  bs_local_args = { "key": "BROWSERSTACK_ACCESS_KEY" }
   ```
   ```
   python ./scripts/local.py

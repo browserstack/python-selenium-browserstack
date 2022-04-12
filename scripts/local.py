@@ -1,7 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,7 +10,7 @@ from selenium.common.exceptions import NoSuchElementException
 bs_local = Local()
 
 # You can also set an environment variable - "BROWSERSTACK_ACCESS_KEY".
-bs_local_args = { "key": "ACCESS_KEY" }
+bs_local_args = { "key": "BROWSERSTACK_ACCESS_KEY" }
 
 # Starts the Local instance with the required arguments
 bs_local.start(**bs_local_args)
@@ -33,7 +30,7 @@ desired_cap = {
 options = ChromeOptions()
 options.set_capability('bstack:options', desired_cap)
 driver = webdriver.Remote(
-    command_executor='https://YOUR_USER_NAME:YOUR_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
     options=options)
 try:
     driver.get("http://bs-local.com:45691/check")
@@ -44,5 +41,7 @@ try:
         driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "Local Test ran successfully"}}')
 except NoSuchElementException:
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Local test setup failed"}}')
+except Exception:
+    driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
 # Stop the driver
 driver.quit()
