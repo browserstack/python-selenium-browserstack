@@ -8,15 +8,15 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 
 desired_cap = {
- 'browserName': 'iPhone',
- 'device': 'iPhone 11',
- 'realMobile': 'true',
- 'os_version': '14.0',
- 'name': 'BStack-[Python] Sample Test', # test name
- 'build': 'BStack Build Number 1' # CI/CD job or build name
+  'browserName': 'iPhone',
+  'device': 'iPhone 11',
+  'realMobile': 'true',
+  'os_version': '14.0',
+  'name': 'BStack-[Python] Sample Test', # test name
+  'build': 'BStack Build Number 1' # CI/CD job or build name
 }
 driver = webdriver.Remote(
-    command_executor='https://USER_NAME:ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
     desired_capabilities=desired_cap)
 try:
     driver.get("https://bstackdemo.com/")
@@ -35,5 +35,7 @@ try:
         driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "iPhone 12 has been successfully added to the cart!"}}')
 except NoSuchElementException:
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some elements failed to load"}}')
+except Exception:
+    driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
 # Stop the driver
 driver.quit()

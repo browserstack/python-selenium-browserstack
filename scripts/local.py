@@ -1,7 +1,4 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -12,7 +9,7 @@ from selenium.common.exceptions import NoSuchElementException
 bs_local = Local()
 
 # You can also set an environment variable - "BROWSERSTACK_ACCESS_KEY".
-bs_local_args = { "key": "ACCESS_KEY" }
+bs_local_args = { "key": "BROWSERSTACK_ACCESS_KEY" }
 
 # Starts the Local instance with the required arguments
 bs_local.start(**bs_local_args)
@@ -31,7 +28,7 @@ desired_cap = {
 }
 
 driver = webdriver.Remote(
-    command_executor='https://USER_NAME:ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
     desired_capabilities=desired_cap)
 try:
     driver.get("http://bs-local.com:45691/check")
