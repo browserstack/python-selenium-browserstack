@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
@@ -9,10 +11,15 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from threading import Thread
 
+load_dotenv()
+BROWSERSTACK_USERNAME = os.environ.get("BROWSERSTACK_USERNAME") or "BROWSERSTACK_USERNAME"
+BROWSERSTACK_ACCESS_KEY = os.environ.get("BROWSERSTACK_ACCESS_KEY") or "BROWSERSTACK_ACCESS_KEY"
+URL = os.environ.get("URL") or "https://hub.browserstack.com/wd/hub"
+
 capabilities = [
   {
     "os": "OS X",
-    "osVersion": "latest",
+    "osVersion": "Sierra",
     "buildName" : "parallel-snippet-test",
     "sessionName" : "python 1",
     "platform": "MAC",
@@ -22,7 +29,7 @@ capabilities = [
   },
   {
     "os": "OS X",
-    "osVersion": "latest",
+    "osVersion": "Sierra",
     "buildName" : "parallel-snippet-test",
     "sessionName" : "python 2",
     "platform": "MAC",
@@ -32,7 +39,7 @@ capabilities = [
   },
   {
     "os": "windows",
-    "osVersion": "latest",
+    "osVersion": "11",
     "buildName" : "parallel-snippet-test",
     "sessionName" : "python 3",
     "platform": "MAC",
@@ -52,20 +59,24 @@ def get_browser_option(browser):
     return switcher.get(browser, ChromeOptions())
 
 def run_session(cap):
+    print(cap)
     bstack_options = {
         "os" : cap["os"],
         "osVersion" : cap["osVersion"],
         "buildName" : cap["buildName"],
         "sessionName" : cap["sessionName"],
         "seleniumVersion" : cap["seleniumVersion"],
+        "userName": BROWSERSTACK_USERNAME,
+        "accessKey": BROWSERSTACK_ACCESS_KEY
     }
 
     options = get_browser_option(cap["browser"].lower())
     options.browser_version = cap["browserVersion"]
     options.platform_name = cap["platform"]
     options.set_capability('bstack:options', bstack_options)
+    print(options.capabilities)
     driver = webdriver.Remote(
-        command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+        command_executor=URL,
         options=options)
     try:
         driver.get("https://bstackdemo.com/")

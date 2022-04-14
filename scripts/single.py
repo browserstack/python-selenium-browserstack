@@ -1,12 +1,16 @@
+from dotenv import load_dotenv
+import os
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+
+load_dotenv()
+BROWSERSTACK_USERNAME = os.environ.get("BROWSERSTACK_USERNAME") or "BROWSERSTACK_USERNAME"
+BROWSERSTACK_ACCESS_KEY = os.environ.get("BROWSERSTACK_ACCESS_KEY") or "BROWSERSTACK_ACCESS_KEY"
+URL = os.environ.get("URL") or "https://hub.browserstack.com/wd/hub"
 
 bstack_options = {
     "os" : "OS X",
@@ -15,12 +19,14 @@ bstack_options = {
     "sessionName" : "Selenium-4 Python snippet test",
     "local" : "false",
     "seleniumVersion" : "4.0.0",
+    "userName": BROWSERSTACK_USERNAME,
+    "accessKey": BROWSERSTACK_ACCESS_KEY
 }
 
 options = ChromeOptions()
 options.set_capability('bstack:options', bstack_options)
 driver = webdriver.Remote(
-    command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    command_executor=URL,
     options=options)
 try:
     driver.get("https://bstackdemo.com/")
