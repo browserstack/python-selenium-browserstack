@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -5,11 +7,16 @@ from selenium.webdriver.common.by import By
 from browserstack.local import Local
 from selenium.common.exceptions import NoSuchElementException
 
+load_dotenv()
+BROWSERSTACK_USERNAME = os.environ.get("BROWSERSTACK_USERNAME") or "BROWSERSTACK_USERNAME"
+BROWSERSTACK_ACCESS_KEY = os.environ.get("BROWSERSTACK_ACCESS_KEY") or "BROWSERSTACK_ACCESS_KEY"
+URL = os.environ.get("URL") or "https://hub.browserstack.com/wd/hub"
+
 # Creates an instance of Local
 bs_local = Local()
 
 # You can also set an environment variable - "BROWSERSTACK_ACCESS_KEY".
-bs_local_args = { "key": "BROWSERSTACK_ACCESS_KEY" }
+bs_local_args = { "key": BROWSERSTACK_ACCESS_KEY }
 
 # Starts the Local instance with the required arguments
 bs_local.start(**bs_local_args)
@@ -18,17 +25,19 @@ bs_local.start(**bs_local_args)
 print(bs_local.isRunning())
 
 desired_cap = {
- 'browserName': 'iPhone',
- 'device': 'iPhone 11',
- 'realMobile': 'true',
- 'os_version': '14.0',
- 'name': 'BStack-[Python] Sample Test', # test name
- 'build': 'BStack Build Number 1', # CI/CD job or build name
- 'browserstack.local': 'true'
+  'browserName': 'iPhone',
+  'device': 'iPhone 11',
+  'realMobile': 'true',
+  'os_version': '14.0',
+  'name': 'BStack-[Python] Sample Test', # test name
+  'build': 'BStack Build Number 1', # CI/CD job or build name
+  'browserstack.local': 'true',
+  'browserstack.user': BROWSERSTACK_USERNAME,
+  'browserstack.key': BROWSERSTACK_ACCESS_KEY
 }
 
 driver = webdriver.Remote(
-    command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+    command_executor=URL,
     desired_capabilities=desired_cap)
 try:
     driver.get("http://bs-local.com:45691/check")
@@ -43,3 +52,4 @@ except Exception:
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
 # Stop the driver
 driver.quit()
+bs_local.stop()
