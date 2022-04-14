@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+import os
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -7,6 +9,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from threading import Thread
 from selenium.common.exceptions import NoSuchElementException
+
+load_dotenv()
+BROWSERSTACK_USERNAME = os.environ.get("BROWSERSTACK_USERNAME") or "BROWSERSTACK_USERNAME"
+BROWSERSTACK_ACCESS_KEY = os.environ.get("BROWSERSTACK_ACCESS_KEY") or "BROWSERSTACK_ACCESS_KEY"
+URL = "https://" + BROWSERSTACK_USERNAME + ":" + BROWSERSTACK_ACCESS_KEY + "@hub-cloud.browserstack.com/wd/hub"
 
 # This array 'caps' defines the capabilities browser, device and OS combinations where the test will run
 caps=[{
@@ -50,7 +57,7 @@ caps=[{
 #run_session function adds a product in cart bstackdemo.com
 def run_session(desired_cap):
   driver = webdriver.Remote(
-      command_executor='https://BROWSERSTACK_USER_NAME:BROWSERSTACK_ACCESS_KEY@hub-cloud.browserstack.com/wd/hub',
+      command_executor=URL,
       desired_capabilities=desired_cap)
   try:
     driver.get("https://bstackdemo.com/")
