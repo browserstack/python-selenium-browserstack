@@ -7,17 +7,17 @@ python3 and pip3 should be installed
 
 ## Steps to run test session
 
-1. Install packages through requirements.txt
+- Install packages through requirements.txt
 ```
 pip3 install -r requirements.txt
 ```
-2. Update your credentials in .env file
+- Update your credentials in .env file
 ```dotenv
 BROWSERSTACK_USERNAME="BROWSERSTACK_USERNAME"
 BROWSERSTACK_ACCESS_KEY="BROWSERSTACK_ACCESS_KEY"
 URL="https://hub.browserstack.com/wd/hub"
 ```
-3. Change the capabilities if you wish:
+- Change the capabilities if you wish:
 (For single test session, Navigate to ./scripts/single.py)
 ```python
 desired_cap = {
@@ -32,13 +32,13 @@ desired_cap = {
 }
 ```
 
-2. Run tests
+- Run tests
+
   a. For single
   ```
   python3 ./scripts/single.py
   ```
-  a. For local
-  With step 1 also add your browserstack access key to ./scripts/local.py
+  b. For local
   ```
   python3 ./scripts/local.py
   ```
