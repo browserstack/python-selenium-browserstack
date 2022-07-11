@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from browserstack.local import Local
@@ -19,26 +20,32 @@ bs_local = Local()
 bs_local_args = { "key": BROWSERSTACK_ACCESS_KEY }
 
 # Starts the Local instance with the required arguments
+try:
+  bs_local.start(**bs_local_args)
+except Exception:
+  bs_local.stop()
+
 bs_local.start(**bs_local_args)
 
 # Check if BrowserStack local instance is running
 print(bs_local.isRunning())
 
 desired_cap = {
-  'browserName': 'iPhone',
-  'device': 'iPhone 11',
-  'realMobile': 'true',
-  'os_version': '14.0',
-  'name': 'BStack-[Python] Sample Test', # test name
-  'build': 'BStack Build Number 1', # CI/CD job or build name
-  'browserstack.local': 'true',
-  'browserstack.user': BROWSERSTACK_USERNAME,
-  'browserstack.key': BROWSERSTACK_ACCESS_KEY
+    "os" : "OS X",
+    "osVersion" : "Sierra",
+    "buildName" : "Final-Snippet-Test",
+    "sessionName" : "Selenium-4 Python snippet test",
+    "local" : "true",
+    "seleniumVersion" : "4.0.0",
+    "userName": BROWSERSTACK_USERNAME,
+    "accessKey": BROWSERSTACK_ACCESS_KEY
 }
 
+options = ChromeOptions()
+options.set_capability('bstack:options', desired_cap)
 driver = webdriver.Remote(
     command_executor=URL,
-    desired_capabilities=desired_cap)
+    options=options)
 try:
     driver.get("http://bs-local.com:45691/check")
     body_text = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'body'))).text
@@ -48,8 +55,11 @@ try:
         driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "Local Test ran successfully"}}')
 except NoSuchElementException:
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Local test setup failed"}}')
+    bs_local.stop()
+    
 except Exception:
     driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
+    bs_local.stop() 
 # Stop the driver
 driver.quit()
 bs_local.stop()

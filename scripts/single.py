@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
@@ -11,20 +12,22 @@ BROWSERSTACK_USERNAME = os.environ.get("BROWSERSTACK_USERNAME") or "BROWSERSTACK
 BROWSERSTACK_ACCESS_KEY = os.environ.get("BROWSERSTACK_ACCESS_KEY") or "BROWSERSTACK_ACCESS_KEY"
 URL = os.environ.get("URL") or "https://hub.browserstack.com/wd/hub"
 
-desired_cap = {
-  'browserName': 'iPhone',
-  'device': 'iPhone 11',
-  'realMobile': 'true',
-  'os_version': '14.0',
-  'name': 'BStack-[Python] Sample Test', # test name
-  'build': 'BStack Build Number 1', # CI/CD job or build name
-  'browserstack.user': BROWSERSTACK_USERNAME,
-  'browserstack.key': BROWSERSTACK_ACCESS_KEY
+bstack_options = {
+    "os" : "OS X",
+    "osVersion" : "Sierra",
+    "buildName" : "Final-Snippet-Test",
+    "sessionName" : "Selenium-4 Python snippet test",
+    "local" : "false",
+    "seleniumVersion" : "4.0.0",
+    "userName": BROWSERSTACK_USERNAME,
+    "accessKey": BROWSERSTACK_ACCESS_KEY
 }
 
+options = ChromeOptions()
+options.set_capability('bstack:options', bstack_options)
 driver = webdriver.Remote(
     command_executor=URL,
-    desired_capabilities=desired_cap)
+    options=options)
 try:
     driver.get("https://bstackdemo.com/")
     WebDriverWait(driver, 10).until(EC.title_contains("StackDemo"))
