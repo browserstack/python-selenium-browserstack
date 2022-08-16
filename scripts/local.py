@@ -20,23 +20,17 @@ bs_local = Local()
 bs_local_args = { "key": BROWSERSTACK_ACCESS_KEY }
 
 # Starts the Local instance with the required arguments
-try:
-  bs_local.start(**bs_local_args)
-except Exception:
-  bs_local.stop()
-
 bs_local.start(**bs_local_args)
 
 # Check if BrowserStack local instance is running
-print(bs_local.isRunning())
+print("Local binary connected: ", bs_local.isRunning())
 
 desired_cap = {
     "os" : "OS X",
     "osVersion" : "Sierra",
-    "buildName" : "Final-Snippet-Test",
-    "sessionName" : "Selenium-4 Python snippet test",
+    "buildName" : "browserstack-build-1",
+    "sessionName" : "BStack Python sample local",
     "local" : "true",
-    "seleniumVersion" : "4.0.0",
     "userName": BROWSERSTACK_USERNAME,
     "accessKey": BROWSERSTACK_ACCESS_KEY
 }
@@ -48,18 +42,21 @@ driver = webdriver.Remote(
     options=options)
 try:
     driver.get("http://bs-local.com:45691/check")
-    body_text = WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'body'))).text
-    # Verify whether the product (iPhone 12) is added to cart
+    body_text = WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, 'body'))).text
+    # check if local connected successfully
     if body_text == "Up and running":
-        # Set the status of test as 'passed' or 'failed' based on the condition; if item is added to cart
-        driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "Local Test ran successfully"}}')
-except NoSuchElementException:
-    driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Local test setup failed"}}')
-    bs_local.stop()
-    
+        # mark test as passed if Local is accessible
+        driver.execute_script(
+            'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "Local Test ran successfully"}}')
+    else:
+        # mark test as failed if Local not accessible
+        driver.execute_script(
+            'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Local test setup failed"}}')
 except Exception:
-    driver.execute_script('browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
-    bs_local.stop() 
+    driver.execute_script(
+        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
+    bs_local.stop()
 # Stop the driver
 driver.quit()
 bs_local.stop()
