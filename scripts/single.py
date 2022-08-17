@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import os
+import json
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options as ChromeOptions
@@ -50,11 +51,13 @@ try:
         # Set the status of test as 'failed' if item is not added to cart
         driver.execute_script(
             'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "iPhone 12 not added to the cart!"}}')
-except NoSuchElementException:
+except NoSuchElementException as err:
+    message = "Exception: " + str(err.__class__) + str(err.msg)
     driver.execute_script(
-        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some elements failed to load"}}')
-except Exception:
+        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
+except Exception as err:
+    message = "Exception: " + str(err.__class__) + str(err.msg)
     driver.execute_script(
-        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
+        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
 # Stop the driver
 driver.quit()

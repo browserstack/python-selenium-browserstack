@@ -53,9 +53,10 @@ try:
         # mark test as failed if Local not accessible
         driver.execute_script(
             'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Local test setup failed"}}')
-except Exception:
+except Exception as err:
+    message = "Exception: " + str(err.__class__) + str(err.msg)
     driver.execute_script(
-        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
+        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
     bs_local.stop()
 # Stop the driver
 driver.quit()

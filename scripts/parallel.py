@@ -90,12 +90,14 @@ def run_session(cap):
             # Set the status of test as 'passed' or 'failed' based on the condition; if item is added to cart
             driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "iPhone 12 has been successfully added to the cart!"}}')
-    except NoSuchElementException:
-        driver.execute_script(
-            'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some elements failed to load"}}')
-    except Exception:
-        driver.execute_script(
-            'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": "Some exception occurred"}}')
+except NoSuchElementException as err:
+    message = "Exception: " + str(err.__class__) + str(err.msg)
+    driver.execute_script(
+        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
+except Exception as err:
+    message = "Exception: " + str(err.__class__) + str(err.msg)
+    driver.execute_script(
+        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
     # Stop the driver
     driver.quit()
 
