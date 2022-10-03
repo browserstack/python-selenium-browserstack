@@ -29,13 +29,13 @@ desired_cap = {
   'device': 'iPhone 11',
   'realMobile': 'true',
   'os_version': '14.0',
-  'name': 'BStack-[Python] Sample Test', # test name
-  'build': 'BStack Build Number 1', # CI/CD job or build name
+  'name': 'BStack local python', # test name
+  'build': 'browserstack-build-1', # CI/CD job or build name
   'browserstack.local': 'true',
   'browserstack.user': BROWSERSTACK_USERNAME,
   'browserstack.key': BROWSERSTACK_ACCESS_KEY
 }
-
+desired_cap['browserstack.source']= 'python:sample-selenium-3:v1.0'
 driver = webdriver.Remote(
     command_executor=URL,
     desired_capabilities=desired_cap)
