@@ -34,7 +34,7 @@ desired_cap = {
     "userName": BROWSERSTACK_USERNAME,
     "accessKey": BROWSERSTACK_ACCESS_KEY
 }
-desired_cap["source"] = "python:sample-master:v1.0"
+desired_cap["source"] = "python:sample-main:v1.0"
 options = ChromeOptions()
 options.set_capability('bstack:options', desired_cap)
 driver = webdriver.Remote(
