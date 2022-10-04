@@ -29,12 +29,12 @@ desired_cap = {
     "os" : "OS X",
     "osVersion" : "Sierra",
     "buildName" : "browserstack-build-1",
-    "sessionName" : "BStack Python sample local",
+    "sessionName" : "BStack local python",
     "local" : "true",
     "userName": BROWSERSTACK_USERNAME,
     "accessKey": BROWSERSTACK_ACCESS_KEY
 }
-
+desired_cap["source"] = "python:sample-main:v1.0"
 options = ChromeOptions()
 options.set_capability('bstack:options', desired_cap)
 driver = webdriver.Remote(

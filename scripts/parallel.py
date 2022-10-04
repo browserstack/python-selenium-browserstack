@@ -21,7 +21,7 @@ capabilities = [
     "os": "OS X",
     "osVersion": "Monterey",
     "buildName" : "browserstack-build-1",
-    "sessionName" : "BStack Python sample parallel",
+    "sessionName" : "BStack parallel python",
     "browserName": "chrome",
     "browserVersion": "latest"
   },
@@ -29,7 +29,7 @@ capabilities = [
     "os": "Windows",
     "osVersion": "11",
     "buildName" : "browserstack-build-1",
-    "sessionName" : "BStack Python sample parallel",
+    "sessionName" : "BStack parallel python",
     "browserName": "firefox",
     "browserVersion": "latest"
   },
@@ -37,7 +37,7 @@ capabilities = [
     "osVersion": "10",
     "deviceName" : "Samsung Galaxy S20",
     "buildName" : "browserstack-build-1",
-    "sessionName" : "BStack Python sample parallel",
+    "sessionName" : "BStack parallel python",
     "browserName": "chrome",
   },
 ]
@@ -61,7 +61,7 @@ def run_session(cap):
     }
     if "os" in cap:
       bstack_options["os"] = cap["os"]
-
+    bstack_options["source"] = "python:sample-main:v1.0"
     options = get_browser_option(cap["browserName"].lower())
     if "browserVersion" in cap:
       options.browser_version = cap["browserVersion"]
@@ -90,14 +90,14 @@ def run_session(cap):
             # Set the status of test as 'passed' or 'failed' based on the condition; if item is added to cart
             driver.execute_script(
                 'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "iPhone 12 has been successfully added to the cart!"}}')
-except NoSuchElementException as err:
-    message = "Exception: " + str(err.__class__) + str(err.msg)
-    driver.execute_script(
-        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
-except Exception as err:
-    message = "Exception: " + str(err.__class__) + str(err.msg)
-    driver.execute_script(
-        'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
+    except NoSuchElementException as err:
+        message = "Exception: " + str(err.__class__) + str(err.msg)
+        driver.execute_script(
+            'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
+    except Exception as err:
+        message = "Exception: " + str(err.__class__) + str(err.msg)
+        driver.execute_script(
+            'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"failed", "reason": ' + json.dumps(message) + '}}')
     # Stop the driver
     driver.quit()
 
