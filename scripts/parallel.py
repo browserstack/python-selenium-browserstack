@@ -61,7 +61,7 @@ def run_session(cap):
     }
     if "os" in cap:
       bstack_options["os"] = cap["os"]
-    bstack_options["source"] = "python:sample-master:v1.0"
+    bstack_options["source"] = "python:sample-main:v1.0"
     options = get_browser_option(cap["browserName"].lower())
     if "browserVersion" in cap:
       options.browser_version = cap["browserVersion"]
