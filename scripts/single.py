@@ -21,7 +21,7 @@ bstack_options = {
     "userName": BROWSERSTACK_USERNAME,
     "accessKey": BROWSERSTACK_ACCESS_KEY
 }
-bstack_options["source"] = "python:sample-master:v1.0"
+bstack_options["source"] = "python:sample-main:v1.0"
 options = ChromeOptions()
 options.set_capability('bstack:options', bstack_options)
 driver = webdriver.Remote(
