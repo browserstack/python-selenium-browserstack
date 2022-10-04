@@ -21,41 +21,42 @@ caps=[{
       'os': 'Windows',
       'browser': 'chrome',
       'browser_version': 'latest',
-      'name': 'Parallel Test1', # test name
-      'build': 'BStack-[Python] Sample Build' # Your tests will be organized within this build
+      'name': 'BStack parallel python', # test name
+      'build': 'browserstack-build-1' # Your tests will be organized within this build
       },
       {
       'os_version': '10',
       'os': 'Windows',
       'browser': 'Edge',
       'browser_version': 'latest',
-      'name': 'Parallel Test2', # test name
-      'build': 'BStack-[Python] Sample Build'
+      'name': 'BStack parallel python',
+      'build': 'browserstack-build-1'
       },
       {
       'os_version': 'Big Sur',
       'os': 'OS X',
       'browser': 'Safari',
       'browser_version': 'latest',
-      'name': 'Parallel Test3', # test name
-      'build': 'BStack-[Python] Sample Build'
+      'name': 'BStack parallel python',
+      'build': 'browserstack-build-1'
       },
       {
       'device': 'Samsung Galaxy S20',
       'os_browser': '11.0',
       'real_mobile': 'true',
-      'name': 'Parallel Test4',
-      'build': 'BStack-[Python] Sample Build'
+      'name': 'BStack parallel python',
+      'build': 'browserstack-build-1'
       },
       {
       'device': 'iPhone 12 Pro',
       'os_browser': '14',
       'real_mobile': 'true',
-      'name': 'Parallel Test5',
-      'build': 'BStack-[Python] Sample Build'
+      'name': 'BStack parallel python',
+      'build': 'browserstack-build-1'
 }]
 #run_session function adds a product in cart bstackdemo.com
 def run_session(desired_cap):
+  desired_cap['browserstack.source']= 'python:sample-selenium-3:v1.0'
   driver = webdriver.Remote(
       command_executor=URL,
       desired_capabilities=desired_cap)
