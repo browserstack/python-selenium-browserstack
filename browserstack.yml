@@ -34,9 +34,6 @@ platforms:
     osVersion: 10
     browser: Edge
     browserVersion: latest
-  - device: iPhone 13
-    browserName: Safari
-    osVersion: 15
   - device: Samsung Galaxy S22 Ultra
     browserName: chrome # Try 'samsung' for Samsung browser
     osVersion: 12.0
