@@ -6,6 +6,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 options = ChromeOptions()
+
+# The webdriver management will be handled by the browserstack-sdk
+# so this will be overridden and tests will run browserstack -
+# without any changes to the test files!
 driver = webdriver.Remote(
     command_executor='http://localhost:4444/wd/hub',
     options=options)
