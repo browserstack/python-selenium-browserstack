@@ -1,48 +1,44 @@
 # python-selenium-browserstack
+Run python tests on browserstack using the SDK.
 
 ## Prerequisite
 ```
-python3 and pip3 should be installed
+python3 should be installed
 ```
 
-## Steps to run test session
-
-- Install packages through requirements.txt
+## Setup
+* Clone the repo
+```
+git clone -b sdk https://github.com/browserstack/python-selenium-browserstack.git
+``` 
+* Install packages through requirements.txt
 ```
 pip3 install -r requirements.txt
 ```
-- Update your credentials in .env file
-```dotenv
-BROWSERSTACK_USERNAME="BROWSERSTACK_USERNAME"
-BROWSERSTACK_ACCESS_KEY="BROWSERSTACK_ACCESS_KEY"
-URL="https://hub.browserstack.com/wd/hub"
-```
-- Change the capabilities if you wish:
-(For single test session, Navigate to ./scripts/single.py)
-```python
-desired_cap = {
-  ...
- 'browserName': 'iPhone',
- 'device': 'iPhone 11',
- 'realMobile': 'true',
- 'os_version': '14.0',
- 'name': 'BStack-[Python] Sample Test', # test name
- 'build': 'BStack Build Number 1' # CI/CD job or build name
- ...
-}
-```
 
-- Run tests
+## Set BrowserStack Credentials
+* Add your BrowserStack username and access key in the `browserstack.yml` config fle.
+* You can also export them as environment variables, `BROWSERSTACK_USERNAME` and `BROWSERSTACK_ACCESS_KEY`:
 
-  a. For single
-  ```
-  python3 ./scripts/single.py
-  ```
-  b. For local
-  ```
-  python3 ./scripts/local.py
-  ```
-  c. For parallel
-  ```
-  python3 ./scripts/parallel.py
-  ```
+  #### For Linux/MacOS
+    ```
+    export BROWSERSTACK_USERNAME=<browserstack-username>
+    export BROWSERSTACK_ACCESS_KEY=<browserstack-access-key>
+    ```
+  #### For Windows
+    ```
+    setx BROWSERSTACK_USERNAME=<browserstack-username>
+    setx BROWSERSTACK_ACCESS_KEY=<browserstack-access-key>
+    ```
+
+## Running tests
+* Run sample test:
+  - To run the sample test across platforms defined in the `browserstack.yml` file, run:
+    ```
+    browserstack-sdk ./scripts/test.py
+    ``` 
+* Run tests on locally hosted website:
+  - To run the local test across platforms defined in the `browserstack.yml` file, run:
+    ```
+    browserstack-sdk ./scripts/local-test.py
+    ``` 
