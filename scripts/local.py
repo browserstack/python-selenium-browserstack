@@ -2,12 +2,8 @@ from dotenv import load_dotenv
 import os
 import json
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.options import Options as ChromeOptions
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from browserstack.local import Local
-from selenium.common.exceptions import NoSuchElementException
 
 load_dotenv()
 BROWSERSTACK_USERNAME = os.environ.get("BROWSERSTACK_USERNAME") or "BROWSERSTACK_USERNAME"
