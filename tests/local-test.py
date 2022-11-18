@@ -1,8 +1,5 @@
 import json
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 
 options = ChromeOptions()
@@ -15,11 +12,10 @@ driver = webdriver.Remote(
     options=options)
 
 try:
-    driver.get('http://bs-local.com:45691/check')
-    body_text = WebDriverWait(driver, 10).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, 'body'))).text
+    driver.get('http://bs-local.com:45454')
+    page_title = driver.title
     # check if local connected successfully
-    if body_text == 'Up and running':
+    if 'BrowserStack Local' in page_title:
         # mark test as passed if Local website is accessible
         driver.execute_script(
             'browserstack_executor: {"action": "setSessionStatus", "arguments": {"status":"passed", "reason": "Local Test ran successfully"}}')
