@@ -13,35 +13,38 @@ from selenium.common.exceptions import NoSuchElementException
 from threading import Thread
 
 load_dotenv()
-BROWSERSTACK_USERNAME = os.environ.get("BROWSERSTACK_USERNAME") or "BROWSERSTACK_USERNAME"
-BROWSERSTACK_ACCESS_KEY = os.environ.get("BROWSERSTACK_ACCESS_KEY") or "BROWSERSTACK_ACCESS_KEY"
+BROWSERSTACK_USERNAME = os.environ.get(
+    "BROWSERSTACK_USERNAME") or "BROWSERSTACK_USERNAME"
+BROWSERSTACK_ACCESS_KEY = os.environ.get(
+    "BROWSERSTACK_ACCESS_KEY") or "BROWSERSTACK_ACCESS_KEY"
 URL = os.environ.get("URL") or "https://hub.browserstack.com/wd/hub"
 
 capabilities = [
-  {
-    "os": "OS X",
-    "osVersion": "Monterey",
-    "buildName" : "browserstack-build-1",
-    "sessionName" : "BStack parallel python",
-    "browserName": "chrome",
-    "browserVersion": "latest"
-  },
-  {
-    "os": "Windows",
-    "osVersion": "11",
-    "buildName" : "browserstack-build-1",
-    "sessionName" : "BStack parallel python",
-    "browserName": "firefox",
-    "browserVersion": "latest"
-  },
-  {
-    "osVersion": "10",
-    "deviceName" : "Samsung Galaxy S20",
-    "buildName" : "browserstack-build-1",
-    "sessionName" : "BStack parallel python",
-    "browserName": "chrome",
-  },
+    {
+        "os": "OS X",
+        "osVersion": "Monterey",
+        "buildName": "browserstack-build-1",
+        "sessionName": "BStack parallel python",
+        "browserName": "chrome",
+        "browserVersion": "latest"
+    },
+    {
+        "os": "Windows",
+        "osVersion": "11",
+        "buildName": "browserstack-build-1",
+        "sessionName": "BStack parallel python",
+        "browserName": "firefox",
+        "browserVersion": "latest"
+    },
+    {
+        "osVersion": "10",
+        "deviceName": "Samsung Galaxy S20",
+        "buildName": "browserstack-build-1",
+        "sessionName": "BStack parallel python",
+        "browserName": "chrome",
+    },
 ]
+
 
 def get_browser_option(browser):
     switcher = {
@@ -52,27 +55,28 @@ def get_browser_option(browser):
     }
     return switcher.get(browser, ChromeOptions())
 
+
 def run_session(cap):
     bstack_options = {
-        "osVersion" : cap["osVersion"],
-        "buildName" : cap["buildName"],
-        "sessionName" : cap["sessionName"],
+        "osVersion": cap["osVersion"],
+        "buildName": cap["buildName"],
+        "sessionName": cap["sessionName"],
         "userName": BROWSERSTACK_USERNAME,
         "accessKey": BROWSERSTACK_ACCESS_KEY
     }
     if "os" in cap:
-      bstack_options["os"] = cap["os"]
+        bstack_options["os"] = cap["os"]
     if "deviceName" in cap:
-      bstack_options['deviceName'] = cap["deviceName"]
+        bstack_options['deviceName'] = cap["deviceName"]
     bstack_options["source"] = "python:sample-main:v1.1"
     if cap['browserName'] in ['ios']:
-      cap['browserName'] = 'safari'
+        cap['browserName'] = 'safari'
     options = get_browser_option(cap["browserName"].lower())
     if "browserVersion" in cap:
-      options.browser_version = cap["browserVersion"]
+        options.browser_version = cap["browserVersion"]
     options.set_capability('bstack:options', bstack_options)
     if cap['browserName'].lower() == 'samsung':
-      options.set_capability('browserName', 'samsung')
+        options.set_capability('browserName', 'samsung')
     driver = webdriver.Remote(
         command_executor=URL,
         options=options)
@@ -88,7 +92,7 @@ def run_session(cap):
         # Check if the Cart pane is visible
         WebDriverWait(driver, 10).until(EC.visibility_of_element_located(
             (By.CLASS_NAME, "float-cart__content")))
-        ## Get text of product in cart
+        # Get text of product in cart
         item_in_cart = WebDriverWait(driver, 10).until(EC.visibility_of_element_located(
             (By.XPATH, '//*[@id="__next"]/div/div/div[2]/div[2]/div[2]/div/div[3]/p[1]'))).text
         # Verify whether the product (iPhone 12) is added to cart
@@ -107,5 +111,6 @@ def run_session(cap):
     # Stop the driver
     driver.quit()
 
+
 for cap in capabilities:
-  Thread(target=run_session, args=(cap,)).start()
+    Thread(target=run_session, args=(cap,)).start()
