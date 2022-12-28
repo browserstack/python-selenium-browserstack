@@ -2,7 +2,7 @@
 name: CI python selenium
 on:
   pull_request:
-    branches: [sdk]
+    branches: [sdk, master]
     types: [opened, reopened]
 jobs:
   build:
