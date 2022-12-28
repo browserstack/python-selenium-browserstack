@@ -1,0 +1,33 @@
+---
+name: CI python selenium
+on:
+  pull_request:
+    branches: [sdk, master]
+    types: [opened, reopened]
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+        python: ['3.7', '3.10', '3.11']
+    name: python-sel-repo ${{ matrix.python }} - ${{ matrix.os }}
+    env:
+      BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Print python version
+        run: python --version
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Print browserstack-sdk version
+        run: browserstack-sdk --version
+      - name: run tests in parallel
+        run: browserstack-sdk ./tests/test.py
+      - name: run local tests in parallel
+        run: browserstack-sdk ./tests/local-test.py
