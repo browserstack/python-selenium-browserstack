@@ -39,7 +39,8 @@ desired_cap['browserstack.source'] = 'python:sample-selenium-3:v1.0'
 
 driver = webdriver.Remote(
     command_executor=URL,
-    desired_capabilities=desired_cap)
+    desired_capabilities=desired_cap,
+    keep_alive=True)
 try:
     driver.get("http://bs-local.com:45691/check")
     body_text = WebDriverWait(driver, 10).until(
