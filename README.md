@@ -20,15 +20,11 @@ URL="https://hub.browserstack.com/wd/hub"
 
 - Run tests
 
-  a. For single
+  a. For parallel
   ```
-  python3 ./scripts/single.py
+  python3 ./scripts/parallel.py
   ```
   b. For local
   ```
   python3 ./scripts/local.py
-  ```
-  c. For parallel
-  ```
-  python3 ./scripts/parallel.py
   ```
