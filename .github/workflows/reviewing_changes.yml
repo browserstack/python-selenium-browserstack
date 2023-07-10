@@ -1,7 +1,7 @@
 # This job is to test different profiles in sdk branch against Pull Requests raised
 # This workflow targets python-selenium
 
-name: Python SDK Test workflow on workflow_dispatch(from main branch)
+name: Python SDK Test workflow on workflow_dispatch
 
 on:
   workflow_dispatch:
