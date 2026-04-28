@@ -1,3 +1,3 @@
 browserstack-local >= 1.2.3
 selenium
-browserstack-sdk
+browserstack-sdk @ https://sdk-assets.browserstack.com/python/browserstack_sdk-latest.tar.gz
